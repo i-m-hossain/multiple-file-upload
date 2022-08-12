@@ -1,5 +1,5 @@
 import React from "react";
-const FileInput = (props) => {
+const MultipleFileInput = (props) => {
     const handleFile = (e) => {
         const targetFiles =e.target.files;
         //Set Files
@@ -32,4 +32,4 @@ const FileInput = (props) => {
         </div>
     );
 };
-export default FileInput;
+export default MultipleFileInput;
