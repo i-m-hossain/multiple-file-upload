@@ -22,7 +22,8 @@ const MultipleFileSeparateInput = ({ files, setFiles, images, setImages, error, 
             return;
         }
         //file type must be jpg or png 
-        if (!targetFile?.name.match(/\.(jpg|png|jpeg|gif)$/)) { //todo all file support including uppercase 
+
+        if (!targetFile?.name.match(/\.(jpg|png|jpeg|gif|JPG|PNG|JPEG|GIF)$/)) { //todo all file support including uppercase 
             setError(prev => ({ ...prev, [e.target.name]: true }));
             return;
         }
@@ -90,19 +91,20 @@ const MultipleFileSeparateInput = ({ files, setFiles, images, setImages, error, 
         <div >
             <label htmlFor="">Select Image (upto 3)</label>
             <div className='flex space-x-4 mb-4 h-44 p-2 outline-none border border-solid border-blue-100 w-full'>
-                {/* first input image */}
-                <div className="relative">
+                {/* ------ Mapping three inputs------ */}
+                {[1,2,3].map((item, i)=>(
+                    <div className="relative">
                     {
-                        (images?.image1 || error?.image1) &&
+                        (images[`image${item}`]|| error[`image${item}`]) &&
                         <span className="absolute top-8 right-2 z-10 cursor-pointer" onClick={() =>     
-                            {!error?.image1 ? handleDelete(files?.image1.name, "image1"): handleCancel("image1")}
+                            {!error[`image${item}`] ? handleDelete(files[`image${item}`]?.name, `image${item}`): handleCancel(`image${item}`)}
                         }>
                             <ImCross className="bg-white p-1 rounded-lg text-lg" />
                         </span>
                     }
                     {
-                        (images.image1 || error.image1) ?
-                            <img className="h-[150px] w-[200px] object-cover" src={(error.image1 ? brokenImage : images.image1)} alt="image1" />
+                        (images[`image${item}`] || error[`image${item}`]) ?
+                            <img className="h-[150px] w-[200px] object-cover" src={(error[`image${item}`] ? brokenImage : images[`image${item}`])} alt={`${item}`} />
                             :
                             <div className="flex flex-col space-y-2 pt-14 h-[150px] w-[200px] border border-dashed border-black text-center relative">
                                 <h4 className="text-gray-500">Drop File</h4>
@@ -111,80 +113,18 @@ const MultipleFileSeparateInput = ({ files, setFiles, images, setImages, error, 
                                     Select File
                                     <input
                                         type="file"
-                                        name="image1"
-                                        id="image1"
+                                        name={`image${item}`}
+                                        id={`image${item}`}
                                         className="absolute top-0 left-0 opacity-0 w-full h-full block cursor-pointer"
                                         onChange={(e) => { handleUpload(e) }}
-                                        accept="image/png, image/jpg, image/jpeg"
-                                    />
-                                </label>
-                            </div>
-                    }
-
-                </div>
-                {/* second input image */}
-                <div className="relative">
-                    {
-                        (images.image2 || error.image2) &&
-                        <span className="absolute top-8 right-2 z-10 cursor-pointer" onClick={() =>{
-                            !error.image2 ? handleDelete(files?.image2.name, "image2"): handleCancel('image2')
-                        } }>
-                            <ImCross className="bg-white p-1 rounded-lg text-lg" />
-                        </span>
-                    }
-                    {
-                        (images.image2 || error.image2) ?
-                            <img className="h-[150px] w-[200px] object-cover" src={(error.image2 ? brokenImage : images.image2)} alt="image2" />
-                            :
-                            <div className="flex flex-col space-y-2 pt-14 h-[150px] w-[200px] border border-dashed border-black text-center relative">
-                                <h4 className="text-gray-500">Drop File</h4>
-                                <h4 className="text-gray-500 ">Or</h4>
-                                <label htmlFor="image2" className="cursor-pointer text-blue-600">
-                                    Select File
-                                    <input
-                                        type="file"
-                                        name="image2"
-                                        id="image2"
-                                        className="absolute top-0 left-0 opacity-0 w-full h-full block cursor-pointer"
-                                        onChange={(e) => { handleUpload(e) }}
-                                        accept="image/png, image/jpg, image/jpeg"
+                                        accept="image/png, image/jpg, image/jpeg, image/gif, image/PNG, image/JPG, image/JPEG, image/GIF"
                                     />
                                 </label>
                             </div>
                     }
                 </div>
-                {/* third input image */}
-                <div className="relative">
-                    {
-                        //delete button
-                        (images.image3 || error.image3) && //if image or error encounter the icon will be shown
-                        <span className="absolute top-8 right-2 z-10 cursor-pointer" onClick={() => {
-                            !error.image3 ? handleDelete(files.image3.name, "image3"): handleCancel('image3')
-                        }}>
-                            <ImCross className="bg-white p-1 rounded-lg text-lg" />
-                        </span>
-                    }
-                    {
-                        (images.image3 || error.image3) ?
-                            <img className="h-[150px] w-[200px] object-cover" src={(error.image3 ? brokenImage : images.image3)} alt="image3" />
-                            :
-                            <div className="flex flex-col space-y-2 pt-14 h-[150px] w-[200px] border border-dashed border-black text-center relative">
-                                <h4 className="text-gray-500">Drop File</h4>
-                                <h4 className="text-gray-500 ">Or</h4>
-                                <label htmlFor="image3" className="cursor-pointer text-blue-600">
-                                    Select File
-                                    <input
-                                        type="file"
-                                        name="image3"
-                                        id="image3"
-                                        className="absolute top-0 left-0 opacity-0 w-full h-full block cursor-pointer"
-                                        onChange={(e) => { handleUpload(e) }}
-                                        accept="image/png, image/jpg, image/jpeg"
-                                    />
-                                </label>
-                            </div>
-                    }                 
-                </div>
+                ))}
+                
             </div>
         </div>
     )
